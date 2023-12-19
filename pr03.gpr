@@ -1,0 +1,17 @@
+project PR03 is
+ 
+  for Main use ("matrice_pleine.adb", "matrice_creuse.adb", "tester_matrice_pleine.adb","tester_sujet_matrice_pleine.adb","pagerank.adb");
+
+  package Builder is
+     for Default_Switches ("ada") use ("-s");
+  end Builder;
+
+  package Compiler is
+     for Default_Switches ("ada") use ("-gnatwa", "-gnata", "-g");
+  end Compiler;
+
+  package Binder is
+     for Default_Switches ("ada") use ("-E");
+  end Binder;
+
+end PR03;
