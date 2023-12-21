@@ -31,7 +31,7 @@ procedure PageRank is
         return Taille;
     end Lire_Taille;
     Taille : constant Integer := Lire_Taille(sujet_net);
-    Adjacence : T_Matrice (1..Taille,1..Taille);
+    --Adjacence : T_Matrice (1..Taille,1..Taille);
     pi : T_Vecteur (1..Taille);
     alpha : Float := 0.85;
     k : Integer := 150;
@@ -83,23 +83,38 @@ begin
     end;
     if correct then
         if P then
-            begin
-                Lire_Sujet(sujet_net,Adjacence);
-                CalculerH(Adjacence);
-                CalculerS(Adjacence);
-                CalculerG(Adjacence, alpha);
-                CalculerPi(Adjacence,seuil,pi,Taille,k);
-                Tri(pi,indices);
-                EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
-            exception
-                when others => Afficher_Usage;
-            end;
+            --begin
+               -- Lire_Sujet(sujet_net,Adjacence);
+                --CalculerH(Adjacence);
+                --CalculerS(Adjacence);
+                --CalculerG(Adjacence, alpha);
+                --CalculerPi(Adjacence,seuil,pi,Taille,k);
+                --Tri(pi,indices);
+                --EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
+            --exception
+              --  when others => Afficher_Usage;
+            --end;
+            Null;
         else
             begin
                 Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
+                New_Line;
+                New_Line;
+                Put_Line("Reading over");
+                New_Line;
+                New_Line;
                 CalculerH_creuse(Adjacence_creuse);
+                New_Line; New_Line;
+                Put_Line("H over");
+                New_Line; New_Line;
                 CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k,alpha);
+                New_Line; New_Line;
+                Put_Line("Pi over");
+                New_Line; New_Line;
                 Tri(pi,indices);
+                New_Line; New_Line;
+                Put_Line("Tri over");
+                New_Line; New_Line;
                 EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
             exception
                 when others => Afficher_Usage;

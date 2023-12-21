@@ -48,6 +48,8 @@ package body Matrice_Creuse is
         somme : Float;
         nv_valeur : Float;
     begin
+        Put_Line("Starting H");
+        New_Line;
         for i in H'Range loop
 
             -- Calculer le nombre d'occurrence sur une ligne
@@ -59,6 +61,9 @@ package body Matrice_Creuse is
                 end loop;
             else
                 Null;
+            end if;
+            if i mod 10000 = 0 then
+                Put_Line("Iteration :" & Integer'Image(i) & " sur" & Integer'Image(H'Last));
             end if;
         end loop;
     end CalculerH_creuse;
@@ -108,6 +113,9 @@ package body Matrice_Creuse is
             pik(i) := pi(i);
             pik1(i) := pi(i);
         end loop;
+        New_Line; New_Line;
+        Put_Line("Starting Pi");
+        New_Line; New_Line;
         loop
             for i in 1..Taille loop
                 pik(i) := pik1(i);
@@ -122,12 +130,19 @@ package body Matrice_Creuse is
                 for j in 1..Taille loop
                     pik1(i) := pik1(i) + pik(j)*CalculerG_creuse(H,j,i,alpha);
                 end loop;
+                if (i+1) mod 1000 = 0 then
+                    Put_Line("Pi :" & Integer'Image(i+1) & " sur" & Integer'Image(Taille));
+                end if;
             end loop;
             compteur := compteur + 1;
+            New_Line;
+            Put_Line("Iteration :" & Integer'Image(compteur) & " sur" & Integer'Image(k));
+            Put_Line("Precision :" & Float'Image(norme(pik1,pik)));
+            New_Line;
             exit when (norme(pik1,pik) < seuil) or compteur >= k;
         end loop;
         for i in 1..Taille loop
-                pi(i) := pik1(i);
+            pi(i) := pik1(i);
         end loop;
     end CalculerPi_creuse;
 end Matrice_Creuse;
