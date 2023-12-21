@@ -1,6 +1,7 @@
 project PR03 is
  
-  for Main use ("matrice_pleine.adb", "matrice_creuse.adb", "tester_matrice_pleine.adb","tester_sujet_matrice_pleine.adb","pagerank.adb");
+  for Main use ("matrice_pleine.adb", "matrice_creuse.adb", "tester_matrice_pleine.adb","tester_sujet_matrice_pleine.adb",
+"pagerank.adb","tester_sujet_matrice_creuse.adb","tester_matrice_creuse.adb");
 
   package Builder is
      for Default_Switches ("ada") use ("-s");

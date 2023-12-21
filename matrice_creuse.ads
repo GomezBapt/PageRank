@@ -9,7 +9,9 @@ package Matrice_Creuse is
     procedure Lire_Sujet_creuse(sujet_net : in String; Matrice : out T_Matrice_creuse);
 
     procedure CalculerH_creuse(H : in out T_Matrice_creuse);
+    
+    function CalculerG_creuse(H : in T_Matrice_creuse; i : Integer; j : Integer; alpha : Float) return Float;
 
-    procedure CalculerPi_creuse(H : in T_Matrice_creuse; seuil : in Float; pi : out Matrice_Pleine.T_Vecteur; Taille : in Integer; k : in Integer);
+    procedure CalculerPi_creuse(H : in T_Matrice_creuse; seuil : in Float; pi : out Matrice_Pleine.T_Vecteur; Taille : in Integer; k : in Integer; alpha : Float);
 
 end Matrice_Creuse;

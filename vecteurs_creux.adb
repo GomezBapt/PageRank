@@ -49,13 +49,11 @@ package body Vecteurs_Creux is
 	end Valeur;
 
 
-	procedure Modifier (V : in out T_Vecteur_Creux ;
-				       Indice : in Integer ;
-                     Valeur : in Float ) is
+	procedure Modifier (V : in out T_Vecteur_Creux ; Indice : in Integer ; Valeur : in Float ) is
         Nouveau : T_Vecteur_Creux;
     begin
         if Valeur = 0.0 then
-            return;
+            Null;
         else
             Nouveau := new T_Cellule;
             Nouveau.all.Indice := Indice;

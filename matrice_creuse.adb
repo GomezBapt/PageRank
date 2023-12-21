@@ -5,6 +5,7 @@ with Ada.Numerics.Elementary_Functions;   use  Ada.Numerics.Elementary_Functions
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Vecteurs_Creux; use Vecteurs_Creux;
 with Matrice_Pleine; use Matrice_Pleine;
+
 package body Matrice_Creuse is
 
     -- Lire sujet.net et construire la matrice d’adjacence associée
@@ -62,8 +63,22 @@ package body Matrice_Creuse is
         end loop;
     end CalculerH_creuse;
 
+    function CalculerG_creuse(H : in T_Matrice_creuse; i : Integer; j : Integer; alpha : Float) return Float is
+        s_ij : Float;
+
+
+    begin
+        if Est_Nul(H(i)) then
+            s_ij := 1.0/Float(H'Last);
+        else
+            s_ij := Valeur(H(i),j);
+        end if;
+        return (alpha*s_ij + (1.0-alpha)/Float(H'Last));
+
+    end CalculerG_creuse;
+
       -- Calculer pi à partir de G et d’un seuil
-    procedure CalculerPi_creuse(H : in T_Matrice_creuse; seuil : in Float; pi : out T_Vecteur; Taille : in Integer; k : in Integer) is
+    procedure CalculerPi_creuse(H : in T_Matrice_creuse; seuil : in Float; pi : out T_Vecteur; Taille : in Integer; k : in Integer; alpha : Float) is
         function norme(V1 : in T_Vecteur; V2 : in T_Vecteur) return Float is
             norme1 : Float;
             max : Float;
@@ -105,7 +120,7 @@ package body Matrice_Creuse is
             end loop;
             for i in 1..Taille loop
                 for j in 1..Taille loop
-                    pik1(i) := pik1(i) + pik(j)*Valeur(H(j),i);
+                    pik1(i) := pik1(i) + pik(j)*CalculerG_creuse(H,j,i,alpha);
                 end loop;
             end loop;
             compteur := compteur + 1;
