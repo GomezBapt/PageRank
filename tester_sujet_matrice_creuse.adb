@@ -6,7 +6,7 @@ with Matrice_Creuse; use Matrice_Creuse;
 with Vecteurs_Creux; use Vecteurs_Creux;
 
 procedure Page_Rank_Matrice_Creuse is
-    sujet_net : constant String := "brainlinks.net";
+    sujet_net : constant String := "sujet.net";
     function Lire_Taille(sujet_net : in String) return Integer is
         Taille : Integer;
         F : File_Type;

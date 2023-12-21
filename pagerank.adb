@@ -98,7 +98,7 @@ begin
             begin
                 Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
                 CalculerH_creuse(Adjacence_creuse);
-                CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k);
+                CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k,alpha);
                 Tri(pi,indices);
                 EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
             exception
