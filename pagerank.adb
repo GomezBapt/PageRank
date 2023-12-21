@@ -2,9 +2,11 @@ with Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
 with Matrice_Pleine;        use Matrice_Pleine;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Command_Line;     use Ada.Command_Line;
+with Ada.Command_Line;      use Ada.Command_Line;
+with Vecteurs_Creux;        use Vecteurs_Creux;
+with Matrice_Creuse;        use Matrice_Creuse;
 
-procedure Page_Rank is
+procedure PageRank is
     sujet_net : String := Argument(Argument_Count);
     procedure Afficher_Usage is
     begin
@@ -12,8 +14,8 @@ procedure Page_Rank is
         Put_Line ("Guide d'usage");
         New_Line;
         Put_Line ("   Alpha  : appartient a l'intervalle [0,1]");
-        Put_Line ("   k : un nombre entier");
-        Put_Line ("   epsilon  : permet de definir la pr�cision");
+        Put_Line ("   k : un nombre entier positif");
+        Put_Line ("   epsilon  : permet de definir la precision");
         Put_Line ("   P : utilise le programme matrice pleine");
         Put_Line ("   C  :utilise le programme matrice creuse");
         Put_Line ("   R : donne le nom des fichiers produits");
@@ -42,6 +44,7 @@ procedure Page_Rank is
     correct : Boolean := True;
     OutOfBounds_A : Exception;
     OutOfBounds_K : Exception;
+    Adjacence_creuse : T_Matrice_creuse(1..Taille);
 
 begin
     nb_argument := Argument_Count;
@@ -65,7 +68,7 @@ begin
         elsif Argument(indice) = "-P" or Argument(indice) = "-p" then
             indice := indice + 1;
         elsif Argument(indice) = "-C" or Argument(indice) = "-c" then
-            P := True;
+            P := False;
             indice := indice + 1;
         elsif Argument(indice) = "-R" or Argument(indice) = "-r" then
             prefixe := To_Unbounded_String(Argument(indice + 1));
@@ -92,9 +95,17 @@ begin
                 when others => Afficher_Usage;
             end;
         else
-            Null;
+            begin
+                Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
+                CalculerH_creuse(Adjacence_creuse);
+                CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k);
+                Tri(pi,indices);
+                EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
+            exception
+                when others => Afficher_Usage;
+            end;
         end if;
     else
         Null;
     end if;
-end Page_Rank;
+end PageRank;

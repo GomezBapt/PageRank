@@ -75,10 +75,7 @@ package body Matrice_Pleine is
         vide : Boolean;
         Taille : Integer;
     begin
-        Taille := 0;
-        for i in S'Range loop
-            Taille := Taille + 1;
-        end loop;
+        Taille := S'Last;
         for i in S'Range loop
 
             -- Savoir si la ligne i a que des zéros
@@ -107,10 +104,7 @@ package body Matrice_Pleine is
     procedure CalculerG(G : in out T_Matrice; alpha : in Float) is
         Taille : Integer;
     begin
-        Taille := 0;
-        for i in G'Range loop
-            Taille := Taille + 1;
-        end loop;
+        Taille := G'Last;
         for i in G'Range loop
             for j in G'Range loop
 
