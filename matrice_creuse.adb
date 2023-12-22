@@ -68,16 +68,20 @@ package body Matrice_Creuse is
         end loop;
     end CalculerH_creuse;
 
+    -- Renvoi la valeur de G(i,j)
     function CalculerG_creuse(H : in T_Matrice_creuse; i : Integer; j : Integer; alpha : Float) return Float is
         s_ij : Float;
 
 
     begin
         if Est_Nul(H(i)) then
+            -- La ligne est vide donc s_ij vaut 1/Taille (Correspond au calcul de S)
             s_ij := 1.0/Float(H'Last);
         else
+            -- Calcul de S si la ligne n'est pas vide
             s_ij := Valeur(H(i),j);
         end if;
+        -- On calcule la valeur de G(i,j)
         return (alpha*s_ij + (1.0-alpha)/Float(H'Last));
 
     end CalculerG_creuse;

@@ -8,6 +8,8 @@ with Matrice_Creuse;        use Matrice_Creuse;
 
 procedure PageRank is
     sujet_net : String := Argument(Argument_Count);
+
+    -- Affiche comment utiliser les options
     procedure Afficher_Usage is
     begin
         New_Line;
@@ -21,6 +23,8 @@ procedure PageRank is
         Put_Line ("   R : donne le nom des fichiers produits");
         New_Line;
     end Afficher_Usage;
+
+    -- Lit et retourne la taille du graphe
     function Lire_Taille(sujet_net : in String) return Integer is
         Taille : Integer;
         F : File_Type;
@@ -30,6 +34,8 @@ procedure PageRank is
         Close(F);
         return Taille;
     end Lire_Taille;
+
+
     Taille : constant Integer := Lire_Taille(sujet_net);
     --Adjacence : T_Matrice (1..Taille,1..Taille);
     pi : T_Vecteur (1..Taille);
@@ -49,6 +55,8 @@ procedure PageRank is
 begin
     nb_argument := Argument_Count;
     begin
+
+    -- Parcourt les arguments de la ligne de commande et met à jour les constantes en fonction
     while indice < nb_argument and correct loop
         if Argument(indice) = "-A" or Argument(indice) = "-a" then
             alpha := Float'Value(Argument(indice + 1));
@@ -83,6 +91,7 @@ begin
     end;
     if correct then
         if P then
+        -- Lance pagerank avec matrice pleine
             --begin
                -- Lire_Sujet(sujet_net,Adjacence);
                 --CalculerH(Adjacence);
@@ -96,6 +105,7 @@ begin
             --end;
             Null;
         else
+        -- Lance pagerank avec matrice creuse
             begin
                 Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
                 New_Line;
