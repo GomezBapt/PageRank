@@ -64,7 +64,7 @@ package body Matrice_Pleine is
 
             -- Modifier la ligne i
             for j in H'Range loop
-                H(i,j) := H(i,j)/Float(somme);
+                H(i,j) := H(i,j)/T_Reel(somme);
             end loop;
         end loop;
     end CalculerH;
@@ -91,7 +91,7 @@ package body Matrice_Pleine is
             -- Modifier la ligne i
             if Vide then
                 for j in S'Range loop
-                    S(i,j) := 1.0/Float(Taille);
+                    S(i,j) := 1.0/T_Reel(Taille);
                 end loop;
             else
                 Null;
@@ -108,7 +108,7 @@ package body Matrice_Pleine is
         for i in G'Range loop
             for j in G'Range loop
 
-                G(i,j) := alpha*G(i,j) + (1.0 - alpha)/Float(Taille);
+                G(i,j) := T_Reel(alpha)*G(i,j) + (1.0 - T_Reel(alpha))/T_Reel(Taille);
 
             end loop;
         end loop;
@@ -117,9 +117,9 @@ package body Matrice_Pleine is
 
     -- Calculer pi à partir de G et d’un seuil
     procedure CalculerPi(G : in T_Matrice; seuil : in Float; pi : out T_Vecteur; Taille : in Integer; k : in Integer) is
-        function norme(V1 : in T_Vecteur; V2 : in T_Vecteur) return Float is
-            norme1 : Float;
-            max : Float;
+        function norme(V1 : in T_Vecteur; V2 : in T_Vecteur) return T_Reel is
+            norme1 : T_Reel;
+            max : T_Reel;
         begin
             max := 0.0;
             norme1 := 0.0;
@@ -140,7 +140,7 @@ package body Matrice_Pleine is
 
         -- Initialiser pi 
         for i in 1..Taille loop
-            pi(i) := 1.0/Float(Taille);
+            pi(i) := 1.0/T_Reel(Taille);
         end loop;
         for i in 1..Taille loop
             pik(i) := pi(i);
@@ -162,7 +162,7 @@ package body Matrice_Pleine is
                 end loop;
             end loop;
             compteur := compteur + 1;
-            exit when (norme(pik1,pik) < seuil) or compteur >= k;
+            exit when (norme(pik1,pik) < T_Reel(seuil)) or compteur >= k;
         end loop;
         for i in 1..Taille loop
                 pi(i) := pik1(i);
@@ -173,13 +173,13 @@ package body Matrice_Pleine is
     -- Trier pi
     procedure Tri(pi : in out T_Vecteur; indices : out T_Vecteur) is
         Taille : Integer;
-        max : Float;
+        max : T_Reel;
         indice_max : Integer;
-        temp : Float;
+        temp : T_Reel;
     begin
         Taille := pi'Last;
         for i in pi'Range loop
-            indices(i) := Float(i);
+            indices(i) := T_Reel(i);
         end loop;
         for i in pi'Range loop
             max := 0.0;
@@ -221,7 +221,7 @@ package body Matrice_Pleine is
         Put(F_prw, " ");
         Put_Line(F_prw, Integer'Image(i_max));
         for i in pi'Range loop
-            Put_Line(F_prw, Float'Image(pi(i)));
+            Put_Line(F_prw, T_Reel'Image(pi(i)));
         end loop;
         Close(F_prw);
 

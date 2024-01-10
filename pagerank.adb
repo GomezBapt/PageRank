@@ -1,13 +1,62 @@
 with Ada.Text_IO;           use Ada.Text_IO;
 with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
-with Matrice_Pleine;        use Matrice_Pleine;
+with Matrice_Pleine;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Command_Line;      use Ada.Command_Line;
 with Vecteurs_Creux;        use Vecteurs_Creux;
-with Matrice_Creuse;        use Matrice_Creuse;
+with Matrice_Creuse;
+
 
 procedure PageRank is
     sujet_net : String := Argument(Argument_Count);
+
+
+    procedure PageRank_pleine(sujet_net : in String; alpha : in Float; seuil : in Float; Taille : in Integer; k : in Integer; prefixe : in Unbounded_String) is
+        package Matrice_Pleine_Reel is
+        new Matrice_Pleine (T_Reel => Long_Long_Float);
+        use Matrice_Pleine_Reel;
+        Adjacence : T_Matrice (1..Taille,1..Taille);
+        pi : T_Vecteur (1..Taille);
+        indices : T_Vecteur(1..Taille);
+    begin
+        Lire_Sujet(sujet_net,Adjacence);
+        CalculerH(Adjacence);
+        CalculerS(Adjacence);
+        CalculerG(Adjacence, alpha);
+        CalculerPi(Adjacence,seuil,pi,Taille,k);
+        Tri(pi,indices);
+        EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
+    end PageRank_pleine;
+
+    procedure PageRank_creuse(sujet_net : in String; alpha : in Float; seuil : in Float; Taille : in Integer; k : in Integer; prefixe : in Unbounded_String) is
+        package Matrice_Creuse_Reel is
+        new Matrice_Creuse (T_Reel => Long_Long_Float);
+        use Matrice_Creuse_Reel;
+        Adjacence_creuse : T_Matrice_creuse(1..Taille);
+        pi : T_Vecteur (1..Taille);
+        indices : T_Vecteur(1..Taille);
+    begin
+        Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
+        New_Line;
+        New_Line;
+        Put_Line("Reading over");
+        New_Line;                New_Line;
+        CalculerH_creuse(Adjacence_creuse);
+        New_Line; New_Line;
+        Put_Line("H over");
+        New_Line; New_Line;
+        CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k,alpha);
+        New_Line; New_Line;
+        Put_Line("Pi over");
+        New_Line; New_Line;
+        Tri(pi,indices);
+        New_Line; New_Line;
+        Put_Line("Tri over");
+        New_Line; New_Line;
+        EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
+    end PageRank_creuse;
+
+
 
     -- Affiche comment utiliser les options
     procedure Afficher_Usage is
@@ -37,20 +86,16 @@ procedure PageRank is
 
 
     Taille : constant Integer := Lire_Taille(sujet_net);
-    --Adjacence : T_Matrice (1..Taille,1..Taille);
-    pi : T_Vecteur (1..Taille);
     alpha : Float := 0.85;
     k : Integer := 150;
     seuil : Float := 0.0;
     P : Boolean := True;
     indice : Integer := 1;
     nb_argument : Integer;
-    indices : T_Vecteur(1..Taille);
     prefixe : Unbounded_String := To_Unbounded_String("output");
     correct : Boolean := True;
     OutOfBounds_A : Exception;
     OutOfBounds_K : Exception;
-    Adjacence_creuse : T_Matrice_creuse(1..Taille);
 
 begin
     nb_argument := Argument_Count;
@@ -92,40 +137,17 @@ begin
     if correct then
         if P then
         -- Lance pagerank avec matrice pleine
-            --begin
-               -- Lire_Sujet(sujet_net,Adjacence);
-                --CalculerH(Adjacence);
-                --CalculerS(Adjacence);
-                --CalculerG(Adjacence, alpha);
-                --CalculerPi(Adjacence,seuil,pi,Taille,k);
-                --Tri(pi,indices);
-                --EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
-            --exception
-              --  when others => Afficher_Usage;
-            --end;
+            begin
+               PageRank_pleine(sujet_net, alpha,seuil,Taille,k ,prefixe);
+            exception
+                when STORAGE_ERROR => Put_Line("Stack Overflow, merci d'utiliser matrice creuse");
+                when others => Afficher_Usage;
+            end;
             Null;
         else
         -- Lance pagerank avec matrice creuse
             begin
-                Lire_Sujet_creuse(sujet_net,Adjacence_creuse);
-                New_Line;
-                New_Line;
-                Put_Line("Reading over");
-                New_Line;
-                New_Line;
-                CalculerH_creuse(Adjacence_creuse);
-                New_Line; New_Line;
-                Put_Line("H over");
-                New_Line; New_Line;
-                CalculerPi_creuse(Adjacence_creuse,seuil,pi,Taille,k,alpha);
-                New_Line; New_Line;
-                Put_Line("Pi over");
-                New_Line; New_Line;
-                Tri(pi,indices);
-                New_Line; New_Line;
-                Put_Line("Tri over");
-                New_Line; New_Line;
-                EcrireSortie(indices,pi,alpha,k,Taille,To_String(prefixe));
+                PageRank_creuse(sujet_net, alpha,seuil,Taille,k ,prefixe);
             exception
                 when others => Afficher_Usage;
             end;

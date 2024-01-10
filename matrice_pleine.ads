@@ -1,7 +1,12 @@
-package Matrice_Pleine is
+generic
+    type T_Reel is digits <>;
 
-    type T_Matrice is array (Integer range <>, Integer range <>) of Float;
-    type T_Vecteur is array (Integer range <>) of Float;
+
+
+package Matrice_Pleine is 
+
+    type T_Matrice is array (Integer range <>, Integer range <>) of T_Reel;
+    type T_Vecteur is array (Integer range <>) of T_Reel;
 
     procedure Lire_Sujet(sujet_net : in String; Matrice : out T_Matrice);
 
